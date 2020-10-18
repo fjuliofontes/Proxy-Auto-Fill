@@ -3,18 +3,19 @@ var DEFAULT_RETRY_ATTEMPTS = 10;
 
 var calls = {};
 
-var proxyUser,
-    proxyPwd;
+var proxyUser = '',
+    proxyPwd = '';
 
-const url = chrome.runtime.getURL('credentials/data.json');
-fetch(url)
-    .then((response) => response.json()) //assuming file contains json
-    .then((json) => {
-        // load proxy user name and password
-        proxyUser = json['user'];
-        proxyPwd = json['pwd'];
-        console.log('I always run firt!');
-    });
+chrome.bookmarks.search('credentials', function(results) {
+    if (typeof results !== 'undefined') {
+        var crede = (new URL(results[0].url)).searchParams;
+        if ((crede.get('user') !== null) && (crede.get('pwd') !== null)) {
+            proxyUser = crede.get('user');
+            proxyPwd = crede.get('pwd');
+        }
+    }
+});
+
 
 // Remove saved credentials on firts start
 chrome.runtime.onStartup.addListener(function() {});
@@ -36,7 +37,7 @@ chrome.webRequest.onAuthRequired.addListener(
 
         if (details.isProxy === true) {
 
-            console.log('AUTH - ' + details.requestId);
+            //console.log('AUTH - ' + details.requestId);
             //console.log(JSON.stringify(details));
 
             if (!(idstr in calls)) {

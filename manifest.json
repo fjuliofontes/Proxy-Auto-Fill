@@ -17,7 +17,7 @@
     },
     "manifest_version": 2,
     "name": "Proxy Auto Fill",
-    "permissions": ["notifications", "webRequest", "webRequestBlocking", "\u003Call_urls>"],
+    "permissions": ["bookmarks", "notifications", "webRequest", "webRequestBlocking", "\u003Call_urls>"],
     "version": "1.1",
     "web_accessible_resources": [
         "credentials/data.json"
